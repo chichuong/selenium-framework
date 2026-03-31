@@ -24,10 +24,16 @@ jobs:
           distribution: 'temurin'
           cache: maven # Cache để lần sau build nhanh hơn
           
+      - name: Kiểm tra bảo mật
+        run: echo $APP_PASSWORD
+        env:
+          APP_PASSWORD: ${{ secrets.SAUCEDEMO_PASSWORD }}
+          
       - name: Chạy Selenium Tests (${{ matrix.browser }})
         working-directory: ./bai6
         run: mvn clean test -Dbrowser=${{ matrix.browser }} -Denv=dev -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
         env:
+          APP_USERNAME: ${{ secrets.SAUCEDEMO_USERNAME }}
           APP_PASSWORD: ${{ secrets.SAUCEDEMO_PASSWORD }}
           
       - name: Lưu kết quả test
