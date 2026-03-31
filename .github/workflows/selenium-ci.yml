@@ -22,7 +22,7 @@ jobs:
           
       - name: Chạy Selenium Tests
         working-directory: ./bai6
-        run: mvn clean test -Dbrowser=chrome -Denv=dev -DsuiteXmlFile=src/test/resources/testng.xml
+        run: mvn clean test -Dbrowser=chrome -Denv=dev -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
         env:
           APP_PASSWORD: ${{ secrets.SAUCEDEMO_PASSWORD }}
           
