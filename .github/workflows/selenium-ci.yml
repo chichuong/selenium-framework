@@ -9,6 +9,10 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # Chrome fail không dừng Firefox
+      matrix:
+        browser: [chrome, firefox] # Tạo 2 job chạy song song
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -20,9 +24,9 @@ jobs:
           distribution: 'temurin'
           cache: maven # Cache để lần sau build nhanh hơn
           
-      - name: Chạy Selenium Tests
+      - name: Chạy Selenium Tests (${{ matrix.browser }})
         working-directory: ./bai6
-        run: mvn clean test -Dbrowser=chrome -Denv=dev -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
+        run: mvn clean test -Dbrowser=${{ matrix.browser }} -Denv=dev -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
         env:
           APP_PASSWORD: ${{ secrets.SAUCEDEMO_PASSWORD }}
           
@@ -30,7 +34,7 @@ jobs:
         if: always() # Chạy dù test pass hay fail
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-${{ matrix.browser }}
           path: |
             bai6/target/surefire-reports/
             bai6/target/screenshots/
