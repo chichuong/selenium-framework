@@ -9,8 +9,9 @@ public class ConfigReader {
     private Properties properties;
 
     private ConfigReader() {
-        // Fallback to "dev" if not provided via maven
+        // Fallback to "dev" if not provided via maven (or if Maven sets it to empty string)
         String env = System.getProperty("env", "dev");
+        if (env == null || env.isBlank()) env = "dev";
         String path = "src/test/resources/config-" + env + ".properties";
         try {
             FileInputStream input = new FileInputStream(path);
@@ -34,5 +35,10 @@ public class ConfigReader {
 
     public String getProperty(String key) {
         return properties.getProperty(key);
+    }
+
+    /** Reset singleton – dùng khi đổi env giữa các test suite */
+    public static void reset() {
+        instance = null;
     }
 }

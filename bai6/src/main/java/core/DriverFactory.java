@@ -9,6 +9,11 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class DriverFactory {
     public static WebDriver createDriver(String browser) {
+        String gridUrl = System.getProperty("grid.url");
+        if (gridUrl != null && !gridUrl.isBlank()) {
+            return createRemoteDriver(browser, gridUrl); // Chạy trên Grid
+        }
+        
         // GitHub Actions tự đặt biến CI=true
         boolean isCI = System.getenv("CI") != null;
         switch (browser.toLowerCase()) {
@@ -16,6 +21,23 @@ public class DriverFactory {
                 return createFirefoxDriver(isCI);
             default:
                 return createChromeDriver(isCI);
+        }
+    }
+    private static WebDriver createRemoteDriver(String browser, String gridUrl) {
+        org.openqa.selenium.remote.DesiredCapabilities caps = new org.openqa.selenium.remote.DesiredCapabilities();
+        caps.setBrowserName(browser.toLowerCase());
+        if (browser.equalsIgnoreCase("chrome")) {
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--no-sandbox", "--disable-dev-shm-usage");
+            caps.merge(options);
+        }
+        try {
+            java.net.URL gridEndpoint = new java.net.URL(gridUrl + "/wd/hub");
+            org.openqa.selenium.remote.RemoteWebDriver driver = new org.openqa.selenium.remote.RemoteWebDriver(gridEndpoint, caps);
+            driver.manage().timeouts().implicitlyWait(java.time.Duration.ofSeconds(10));
+            return driver;
+        } catch (java.net.MalformedURLException e) {
+            throw new RuntimeException("Grid URL không hợp lệ: " + gridUrl);
         }
     }
 

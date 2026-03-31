@@ -1,6 +1,11 @@
 # Tuần 9 - Thực hành Kiểm thử Tự động (Automation Testing)
 
+[![Test Status](https://github.com/{USERNAME}/{REPO}/actions/workflows/selenium-full.yml/badge.svg)](https://github.com/{USERNAME}/{REPO}/actions)
+[![Allure Report](https://img.shields.io/badge/Allure-Report-orange)](https://{USERNAME}.github.io/{REPO}/)
+
 Dự án này bao gồm các bài tập và ví dụ thực hành về kiểm thử tự động (Automation Testing) sử dụng **Java**, **Selenium WebDriver** và **TestNG**. Dự án được chia thành 6 bài tập (từ `bai1` đến `bai6`), mỗi bài tập tập trung vào một khía cạnh cụ thể của việc xây dựng framework kiểm thử tự động.
+
+> **Lưu ý**: Thay thế `{USERNAME}` và `{REPO}` bằng GitHub username và tên repository của bạn.
 
 ## Cấu trúc dự án
 

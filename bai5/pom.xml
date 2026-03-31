@@ -13,6 +13,9 @@
         <maven.compiler.target>11</maven.compiler.target>
         <selenium.version>4.18.1</selenium.version>
         <testng.version>7.9.0</testng.version>
+        <allure.version>2.26.0</allure.version>
+        <!-- Mặc định env=dev, override bằng -Denv=staging -->
+        <env>dev</env>
     </properties>
 
     <dependencies>
@@ -29,6 +32,13 @@
             <artifactId>testng</artifactId>
             <version>${testng.version}</version>
         </dependency>
+
+        <!-- Allure TestNG -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -40,7 +50,30 @@
                 <configuration>
                     <systemPropertyVariables>
                         <env>${env}</env>
+                        <!-- Allure results directory -->
+                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
                     </systemPropertyVariables>
+                    <!-- Kích hoạt Allure listener -->
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.21/aspectjweaver-1.9.21.jar"
+                    </argLine>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>1.9.21</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <!-- Allure Maven Plugin -->
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.12.0</version>
+                <configuration>
+                    <reportVersion>${allure.version}</reportVersion>
                 </configuration>
             </plugin>
         </plugins>
