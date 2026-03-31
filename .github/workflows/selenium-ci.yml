@@ -21,7 +21,8 @@ jobs:
           cache: maven # Cache để lần sau build nhanh hơn
           
       - name: Chạy Selenium Tests
-        run: mvn clean test -Dbrowser=chrome -Denv=dev -DsuiteXmlFile=testng-smoke.xml
+        working-directory: ./bai6
+        run: mvn clean test -Dbrowser=chrome -Denv=dev -DsuiteXmlFile=src/test/resources/testng.xml
         env:
           APP_PASSWORD: ${{ secrets.SAUCEDEMO_PASSWORD }}
           
@@ -31,6 +32,6 @@ jobs:
         with:
           name: test-results
           path: |
-            target/surefire-reports/
-            target/screenshots/
+            bai6/target/surefire-reports/
+            bai6/target/screenshots/
           retention-days: 30

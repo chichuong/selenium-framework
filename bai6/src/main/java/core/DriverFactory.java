@@ -11,10 +11,12 @@ public class DriverFactory {
     public static WebDriver createDriver(String browser) {
         // GitHub Actions tự đặt biến CI=true
         boolean isCI = System.getenv("CI") != null;
-        return switch (browser.toLowerCase()) {
-            case "firefox" -> createFirefoxDriver(isCI);
-            default -> createChromeDriver(isCI);
-        };
+        switch (browser.toLowerCase()) {
+            case "firefox":
+                return createFirefoxDriver(isCI);
+            default:
+                return createChromeDriver(isCI);
+        }
     }
 
     private static WebDriver createChromeDriver(boolean headless) {
